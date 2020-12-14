@@ -1,1 +1,12 @@
 /* style.css */
+
+/* Set default height of html and body elements to 100% to fill screen */
+html, body {
+  height: 100%;
+  margin: 0px;
+}
+
+/* Set default height of container to 100% */
+.container-fluid {
+  height: 100%;
+}
