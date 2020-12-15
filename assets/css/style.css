@@ -10,3 +10,8 @@ html, body {
 .container-fluid {
   height: 100%;
 }
+
+/* Make answer button container align buttons to the left */
+.btnContainer {
+  align-self: flex-start;
+}
