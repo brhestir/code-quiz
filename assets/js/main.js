@@ -1,14 +1,7 @@
 // main.js
 // The main javascript file for the code-quiz app
 
-// We want a root element.  This will be the middle row.
-
-// For each "card", we want to 
-// - Consider program state (what card are we on)
-// - What is the form of this card? Intro? Question? HS?
-// - Based on card form, read from data array variable
-// - Generate card using data in the array.
-
+// Container array for question/answers/truth-value data
 var questionAnswerArray = [
   [ "Commonly used data types DO NOT include:",
     [ [ "Strings", "false" ],
@@ -52,9 +45,6 @@ var timerState = 75;      // Time remaining counter
 var timerID;              // setInterval id so we can clearInterval later
 var timerActive = false;  // timer on/off flag
 
-///////////////////////////////////////////
-// Intro card
-//////////////////////////////////////////
 function displayIntroCard(){
   // Obtain root element
   var rootDiv = document.getElementById("rootDiv");
@@ -89,28 +79,16 @@ function displayIntroCard(){
 };
 
 function startQuiz(){
+  // Obtain root element
+  var rootDiv = document.getElementById("rootDiv");
+  // Obtain and clear child of root (clear UI)
+  if(rootDiv.firstChild){
+    rootDiv.removeChild(rootDiv.firstChild);
+  }
+
   timerState = 75;        // Set initial timer state to 75 seconds
   timerActive = true;     // Turn timer on
-  displayQuestionCard();  // Show question
-}
-
-function updateTimer(){
-  var timerEl = document.getElementById("timerElement");
-  if(timerActive===true){
-    if(timerState>0){
-      timerState -= 1;
-    }
-    else{
-      console.log("TIME IS UP!");
-      clearTimeout(timerID);        // stop timer
-      // do other time is up action here
-    }
-    // Update timer display
-    timerEl.textContent = "Time Remaining: " + timerState;  
-  }
-  else{
-    // do nothing
-  }
+  displayQuestionCard();  // async call of displayQuestionCard()
 }
 
 function displayQuestionCard(){
@@ -142,30 +120,38 @@ function displayQuestionCard(){
     btnElement.className = "btn btn-primary btn-sm";
     btnElement.textContent = ""+(i+1)+". " + questionAnswerArray[questionState][1][i][0]; //[1][0][0] -> answer[0]text
     btnElement.setAttribute("data-index", i);
-    
-    
-
     btnContainer.append(btnElement);
-
   };  // end for
 
   // button click event handler section
   btnContainer.addEventListener("click", btnClickHandler);
-
 };
 
 function btnClickHandler(event){
   var btnIndex = event.target.getAttribute("data-index"); // btn index as created earlier
+  
+  // on CORRECT, increment questionState & redraw
   if(questionAnswerArray[questionState][1][btnIndex][1] === "true"){
     console.log("Answer is TRUE!");
-    questionState++;
+    console.log("Old question state: " + questionState);
+    questionState++;  // increment question state
+    console.log("New question state: " + questionState);
+    
+    if(questionState < questionAnswerArray.length){
+      displayQuestionCard();    // Draw question card under new state
+    }
+    else{
+      displaySummaryCard();     // Draw summary card
+    }
   }
   else if( questionAnswerArray[questionState][1][btnIndex][1] === "false"){
     // Decrement main timer by 10 seconds
     if(timerState>=10){
+      console.log("Answer is FALSE! Timer -10 sec!");
       timerState -= 10;
     }
     else{
+      console.log("Answer is FALSE! Timer ZEROED");
       timerState = 0;   // set timer to minimum
     }
   }
@@ -174,12 +160,31 @@ function btnClickHandler(event){
   }
 }
 
-function displaySummaryCard(){
+function updateTimer(){
+  var timerEl = document.getElementById("timerElement");
+  if(timerActive===true){
+    if(timerState>0){
+      timerState -= 1;
+    }
+    else{
+      console.log("TIME IS UP!");
+      clearTimeout(timerID);        // stop timer
+      // do other time is up action here
+    }
+    // Update timer display
+    timerEl.textContent = "Time Remaining: " + timerState;  
+  }
+  else{
+    // do nothing
+  }
+}
 
+function displaySummaryCard(){
+  console.log("Called into displaySummaryCard()");
 };
 
 function displayHighscoreCard(){
-
+  console.log("Called into displayHighscoreCard()");
 };
 
 displayIntroCard();
