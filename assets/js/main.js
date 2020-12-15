@@ -362,5 +362,13 @@ function updateTimer(){
   }
 }
 
-displayIntroCard();
-timerID = setInterval(updateTimer, 1000);
+window.onload = function() {
+  console.log("[+] fired: window.onload()");
+
+  var btnViewHighscoresDiv = document.getElementById('highscoreElement');
+  btnViewHighscoresDiv.addEventListener('click', displayHighscoreCard);
+
+  displayIntroCard();
+  timerID = setInterval(updateTimer, 1000);
+};
+  
