@@ -47,7 +47,10 @@ var questionAnswerArray = [
   ]
 ];
 
-var questionState = 0;  // Global UI state counter
+var questionState = 0;    // Global UI state counter
+var timerState = 75;      // Time remaining counter
+var timerID;              // setInterval id so we can clearInterval later
+var timerActive = false;  // timer on/off flag
 
 ///////////////////////////////////////////
 // Intro card
@@ -81,9 +84,34 @@ function displayIntroCard(){
   mainDiv.append(btnElement);
 
   // Point button-click event to show Q1
-  btnElement.addEventListener("click", displayQuestionCard, false);
+  btnElement.addEventListener("click", startQuiz, false);
 
 };
+
+function startQuiz(){
+  timerState = 75;        // Set initial timer state to 75 seconds
+  timerActive = true;     // Turn timer on
+  displayQuestionCard();  // Show question
+}
+
+function updateTimer(){
+  var timerEl = document.getElementById("timerElement");
+  if(timerActive===true){
+    if(timerState>0){
+      timerState -= 1;
+    }
+    else{
+      console.log("TIME IS UP!");
+      clearTimeout(timerID);        // stop timer
+      // do other time is up action here
+    }
+    // Update timer display
+    timerEl.textContent = "Time Remaining: " + timerState;  
+  }
+  else{
+    // do nothing
+  }
+}
 
 function displayQuestionCard(){
   // Obtain root element
@@ -115,27 +143,36 @@ function displayQuestionCard(){
     btnElement.textContent = ""+(i+1)+". " + questionAnswerArray[questionState][1][i][0]; //[1][0][0] -> answer[0]text
     btnElement.setAttribute("data-index", i);
     
-    var index = i;
-    btnElement.addEventListener("click", function(event){
-      var btnIndex = event.target.getAttribute("data-index"); // btn index as created earlier
-      if(questionAnswerArray[questionState][1][btnIndex][1] === "true"){
-        console.log("Answer is TRUE!");
-        questionState++;
-      }
-      else if( questionAnswerArray[questionState][1][btnIndex][1] === "false"){
-        console.log("Answer is FALSE!");
-      }
-      else{
-        console.log("Answer is NEITHER TRUE NOR FALSE");
-      }
-      
-    });  // end local event handler
+    
 
     btnContainer.append(btnElement);
 
   };  // end for
 
+  // button click event handler section
+  btnContainer.addEventListener("click", btnClickHandler);
+
 };
+
+function btnClickHandler(event){
+  var btnIndex = event.target.getAttribute("data-index"); // btn index as created earlier
+  if(questionAnswerArray[questionState][1][btnIndex][1] === "true"){
+    console.log("Answer is TRUE!");
+    questionState++;
+  }
+  else if( questionAnswerArray[questionState][1][btnIndex][1] === "false"){
+    // Decrement main timer by 10 seconds
+    if(timerState>=10){
+      timerState -= 10;
+    }
+    else{
+      timerState = 0;   // set timer to minimum
+    }
+  }
+  else{
+    console.log("Answer is NEITHER TRUE NOR FALSE");
+  }
+}
 
 function displaySummaryCard(){
 
@@ -146,3 +183,4 @@ function displayHighscoreCard(){
 };
 
 displayIntroCard();
+timerID = setInterval(updateTimer, 1000);
