@@ -197,6 +197,13 @@ function displaySummaryCard(){
 function displayHighscoreCard(){
   console.log("Called into displayHighscoreCard()");
 
+  if(!locStorage.getItem('hsArray')){
+    hsArray = [];
+  }
+  else{
+    hsArray = JSON.parse(locStorage.getItem('hsArray'));
+  }
+
   // Obtain root element
   var rootDiv = document.getElementById("rootDiv");
   // Obtain and clear child of root (clear UI)
@@ -214,26 +221,18 @@ function displayHighscoreCard(){
   headingElement.textContent = "Highscores";
   mainDiv.append(headingElement);
 
-  // // Obtain and configure content element list
-  // var paragraphElement = document.createElement("p");
-  // paragraphElement.textContent = "Your final score is " + finalScore;
-  // mainDiv.append(paragraphElement);
-
   // Generate container div for highscore form elements
   var containerDiv = document.createElement("div");
-  // containerDiv.className = "d-flex";
+  containerDiv.className = "container-fluid";
   mainDiv.append(containerDiv);
 
   // HIGHSCORE LOAD/RENDER
-  // iterate over items in localstorage.highscores
-  // create divElement for each highscore found
-  // set divElement.textContent to highscore.name + " " + highscore.value
-  // set divElement.className = "highscoreDiv"
-  // add each divElement to containerDiv
-  hsDiv = document.createElement("div");
-  hsDiv.textContent = "NO LOCAL STORAGE FUNCTIONALITY";
-  containerDiv.append(hsDiv);
-
+  for(var i=0; i<hsArray.length; i++){
+    hsDiv = document.createElement("div");
+    hsDiv.className = "m-1 highscoreEl";
+    hsDiv.textContent = hsArray[i]['initials'] + " - " + hsArray[i]['value'];
+    containerDiv.append(hsDiv);
+  }
   var buttonGoBackDiv = document.createElement("button");
   buttonGoBackDiv.className = "btn btn-primary btn-sm";
   buttonGoBackDiv.textContent = "Go Back";
@@ -265,14 +264,34 @@ function startQuiz(){
 }
 
 function clearHighscores(){
+  if(locStorage.getItem('hsArray')){
+    var hsArray = [];
+    locStorage.setItem('hsArray', JSON.stringify(hsArray));
+  }
+}
 
+function addHighscore(){
+  if(!locStorage.getItem('hsArray')){
+    var hsArray = [];
+    var hsEntry = { "initials": hsInitials, "value": hsValue };
+    hsArray.push(hsEntry);
+    locStorage.setItem('hsArray', JSON.stringify(hsArray));
+  }
+  else{
+    var hsArray = JSON.parse(locStorage.getItem('hsArray'));
+    var hsEntry = { "initials": hsInitials, "value": hsValue };
+    hsArray.push(hsEntry);
+    locStorage.setItem('hsArray', JSON.stringify(hsArray));
+  }
 }
 
 function btnClickHandler(event){
   if(event.target.hasAttribute("id") === true){
     if(event.target.getAttribute("id") === "btnSubmit"){
       var inputDiv = document.getElementById("inputDivControlInput");
-      console.log("btnSubmit was CLICKED: " + inputDiv.value + " - " + hsValue);
+      hsInitials = inputDiv.value;
+      console.log("btnSubmit was CLICKED: " + hsInitials + " - " + hsValue);
+      addHighscore();
       displayHighscoreCard();
     }
     else if(event.target.getAttribute("id") === "btnGoBack"){
@@ -282,6 +301,8 @@ function btnClickHandler(event){
     else if(event.target.getAttribute("id") === "btnClearHS"){
       console.log("CLEAR HIGHSCORES button CLICKED");
       clearHighscores();
+      displayHighscoreCard();
+
     }
   }
   else if(event.target.hasAttribute("data-index")){

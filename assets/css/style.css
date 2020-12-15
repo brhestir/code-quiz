@@ -16,6 +16,14 @@ html, body {
   align-self: flex-start;
 }
 
+.btnTheme {
+  background-color: rgb(79, 55, 109)
+}
+
 .smallText {
   font-size: medium;
+}
+
+.highscoreEl {
+  background-color: rgb(239, 231, 250);
 }
