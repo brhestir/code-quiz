@@ -28,15 +28,33 @@
 
       <!-- Bottom (main) row, containing the actual quiz content as it changes -->
       <div class="row h-100">
-        <div class="col-3 bg-primary">
-          empty
+        <!-- Empty left div -->
+        <div class="col-3 bg-white"></div>
+        <!-- Center div to display currently visible app state card -->
+        <div class="col-6 bg-white">
+          <!-- List of display cards goes here.  Toggle visibility as state changes -->
+          <!-- <div class="visible"> or <div class="invisible"> -->
+
+          <!-- Begin Intro card -->
+          <div class="card text-center mt-5 visible">
+            <div class="card-header">
+              Card 1
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Super-Extreme Coding Quiz Challenge</h5>
+              <p class="card-text">Coding Quiz instructions and motivation go here!</p>
+              <a href="#" class="btn btn-primary">Start Quiz</a>
+            </div>
+            <div class="card-footer text-muted">
+              Supplemental context information goes here if necessary!
+            </div>
+          </div>
+          <!-- End of Intro card -->
+        
+          <!-- End of center div -->
         </div>
-        <div class="col-6 bg-info">
-          content
-        </div>
-        <div class="col-3 bg-secondary">
-          empty
-        </div>  
+        <!-- Empty right div -->
+        <div class="col-3 bg-white"></div>  
       </div>
     
     </div>  <!-- End of main container div-->
