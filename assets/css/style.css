@@ -15,3 +15,7 @@ html, body {
 .btnContainer {
   align-self: flex-start;
 }
+
+.smallText {
+  font-size: medium;
+}

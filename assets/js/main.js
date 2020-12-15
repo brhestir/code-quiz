@@ -78,19 +78,6 @@ function displayIntroCard(){
 
 };
 
-function startQuiz(){
-  // Obtain root element
-  var rootDiv = document.getElementById("rootDiv");
-  // Obtain and clear child of root (clear UI)
-  if(rootDiv.firstChild){
-    rootDiv.removeChild(rootDiv.firstChild);
-  }
-
-  timerState = 75;        // Set initial timer state to 75 seconds
-  timerActive = true;     // Turn timer on
-  displayQuestionCard();  // async call of displayQuestionCard()
-}
-
 function displayQuestionCard(){
   // Obtain root element
   var rootDiv = document.getElementById("rootDiv");
@@ -127,37 +114,134 @@ function displayQuestionCard(){
   btnContainer.addEventListener("click", btnClickHandler);
 };
 
-function btnClickHandler(event){
-  var btnIndex = event.target.getAttribute("data-index"); // btn index as created earlier
+function displaySummaryCard(){
+
+  console.log("Called into displaySummaryCard()");
+
+  var finalScore = timerState;  // store time remaining as final score
   
-  // on CORRECT, increment questionState & redraw
-  if(questionAnswerArray[questionState][1][btnIndex][1] === "true"){
-    console.log("Answer is TRUE!");
-    console.log("Old question state: " + questionState);
-    questionState++;  // increment question state
-    console.log("New question state: " + questionState);
+  // Obtain root element
+  var rootDiv = document.getElementById("rootDiv");
+  // Obtain and clear child of root (clear UI)
+  if(rootDiv.firstChild){
+    rootDiv.removeChild(rootDiv.firstChild);
+  }
+
+  var mainDiv = document.createElement("div");
+  mainDiv.setAttribute("id", "trunkDiv");
+  mainDiv.className = "d-flex flex-column align-items-center mt-3";
+  rootDiv.append(mainDiv);
+
+  // Obtain and configure content element list
+  var headingElement = document.createElement("h3");
+  headingElement.textContent = "All done!";
+  mainDiv.append(headingElement);
+
+  // Obtain and configure content element list
+  var paragraphElement = document.createElement("p");
+  paragraphElement.textContent = "Your final score is " + finalScore;
+  mainDiv.append(paragraphElement);
+
+  // Generate container div for highscore form elements
+  var rowDiv = document.createElement("div");
+  rowDiv.className = "row";
+  mainDiv.append(rowDiv);
+
+  var colDiv1 = document.createElement("div");
+  colDiv1.className = "col-4";
+  rowDiv.append(colDiv1);
+
+  var colDiv2 = document.createElement("div");
+  colDiv2.className = "col-4";
+  rowDiv.append(colDiv2);
+  
+  var colDiv3 = document.createElement("div");
+  colDiv3.className = "col-4";
+  rowDiv.append(colDiv3);
+
+  var initialsDiv = document.createElement("p");
+  initialsDiv.className = "smallText";
+  initialsDiv.textContent = "Enter initials:";
+  colDiv1.append(initialsDiv);
+
+  var inputDiv = document.createElement("input");
+  inputDiv.className = "form-control form-control-sm";
+  inputDiv.setAttribute("id", "inputDivControlInput");
+  colDiv2.append(inputDiv);
+
+  var buttonDiv = document.createElement("button");
+  buttonDiv.className = "btn btn-primary btn-sm";
+  buttonDiv.textContent = "Submit";
+  buttonDiv.setAttribute("id", "btnSubmit");
+  colDiv3.append(buttonDiv);
+
+
+
+
+  // button click event handler section
+  buttonDiv.addEventListener("click", btnClickHandler);
+  
+};
+
+function displayHighscoreCard(){
+  console.log("Called into displayHighscoreCard()");
+};
+
+function startQuiz(){
+  // Obtain root element
+  var rootDiv = document.getElementById("rootDiv");
+  // Obtain and clear child of root (clear UI)
+  if(rootDiv.firstChild){
+    rootDiv.removeChild(rootDiv.firstChild);
+  }
+
+  timerState = 75;        // Set initial timer state to 75 seconds
+  timerActive = true;     // Turn timer on
+  displayQuestionCard();  // async call of displayQuestionCard()
+}
+
+function btnClickHandler(event){
+  if(event.target.hasAttribute("id") === true){
+    if(event.target.getAttribute("id") === "btnSubmit"){
+      console.log("btnSubmit was CLICKED!");
+    }
+  }
+  else if(event.target.hasAttribute("data-index")){
+    var btnIndex = event.target.getAttribute("data-index"); // btn index as created earlier
     
-    if(questionState < questionAnswerArray.length){
-      displayQuestionCard();    // Draw question card under new state
+    // on CORRECT, increment questionState & redraw
+    if(questionAnswerArray[questionState][1][btnIndex][1] === "true"){
+      console.log("Answer is TRUE!");
+      console.log("Old question state: " + questionState);
+      questionState++;  // increment question state
+      console.log("New question state: " + questionState);
+      
+      if(questionState < (questionAnswerArray.length)){
+        displayQuestionCard();    // Draw question card under new state
+      }
+      else{
+        displaySummaryCard();     // Draw summary card
+      }
+    }
+    else if( questionAnswerArray[questionState][1][btnIndex][1] === "false"){
+      // Decrement main timer by 10 seconds
+      if(timerState>=10){
+        console.log("Answer is FALSE! Timer -10 sec!");
+        timerState -= 10;
+      }
+      else{
+        console.log("Answer is FALSE! Timer ZEROED");
+        timerState = 0;   // set timer to minimum
+      }
     }
     else{
-      displaySummaryCard();     // Draw summary card
+      console.log("Answer is NEITHER TRUE NOR FALSE");
     }
   }
-  else if( questionAnswerArray[questionState][1][btnIndex][1] === "false"){
-    // Decrement main timer by 10 seconds
-    if(timerState>=10){
-      console.log("Answer is FALSE! Timer -10 sec!");
-      timerState -= 10;
-    }
-    else{
-      console.log("Answer is FALSE! Timer ZEROED");
-      timerState = 0;   // set timer to minimum
-    }
-  }
-  else{
-    console.log("Answer is NEITHER TRUE NOR FALSE");
-  }
+  else {
+    console.log("button click event target UNHANDLED");
+  }  
+    
 }
 
 function updateTimer(){
@@ -178,14 +262,6 @@ function updateTimer(){
     // do nothing
   }
 }
-
-function displaySummaryCard(){
-  console.log("Called into displaySummaryCard()");
-};
-
-function displayHighscoreCard(){
-  console.log("Called into displayHighscoreCard()");
-};
 
 displayIntroCard();
 timerID = setInterval(updateTimer, 1000);
