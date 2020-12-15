@@ -40,12 +40,24 @@ var questionAnswerArray = [
   ]
 ];
 
+locStorage = window.localStorage; // localStorage access object
+
 var questionState = 0;    // Global UI state counter
 var timerState = 75;      // Time remaining counter
 var timerID;              // setInterval id so we can clearInterval later
 var timerActive = false;  // timer on/off flag
+var hsInitials = "";
+var hsValue = 0;
 
 function displayIntroCard(){
+
+  questionState = 0;    // Global UI state counter
+  timerState = 75;      // Time remaining counter
+  // timerID;              // setInterval id so we can clearInterval later
+  timerActive = false;  // timer on/off flag
+  hsInitials = "";
+  hsValue = 0;
+
   // Obtain root element
   var rootDiv = document.getElementById("rootDiv");
   // Obtain and clear child of root (clear UI)
@@ -118,7 +130,9 @@ function displaySummaryCard(){
 
   console.log("Called into displaySummaryCard()");
 
-  var finalScore = timerState;  // store time remaining as final score
+  timerActive = false;          // halt timer
+  hsValue = timerState;  // store time remaining as final score
+  
   
   // Obtain root element
   var rootDiv = document.getElementById("rootDiv");
@@ -139,7 +153,7 @@ function displaySummaryCard(){
 
   // Obtain and configure content element list
   var paragraphElement = document.createElement("p");
-  paragraphElement.textContent = "Your final score is " + finalScore;
+  paragraphElement.textContent = "Your final score is " + hsValue;
   mainDiv.append(paragraphElement);
 
   // Generate container div for highscore form elements
@@ -175,9 +189,6 @@ function displaySummaryCard(){
   buttonDiv.setAttribute("id", "btnSubmit");
   colDiv3.append(buttonDiv);
 
-
-
-
   // button click event handler section
   buttonDiv.addEventListener("click", btnClickHandler);
   
@@ -185,6 +196,59 @@ function displaySummaryCard(){
 
 function displayHighscoreCard(){
   console.log("Called into displayHighscoreCard()");
+
+  // Obtain root element
+  var rootDiv = document.getElementById("rootDiv");
+  // Obtain and clear child of root (clear UI)
+  if(rootDiv.firstChild){
+    rootDiv.removeChild(rootDiv.firstChild);
+  }
+
+  var mainDiv = document.createElement("div");
+  mainDiv.setAttribute("id", "trunkDiv");
+  mainDiv.className = "d-flex flex-column align-items-center mt-3";
+  rootDiv.append(mainDiv);
+
+  // Obtain and configure content element list
+  var headingElement = document.createElement("h3");
+  headingElement.textContent = "Highscores";
+  mainDiv.append(headingElement);
+
+  // // Obtain and configure content element list
+  // var paragraphElement = document.createElement("p");
+  // paragraphElement.textContent = "Your final score is " + finalScore;
+  // mainDiv.append(paragraphElement);
+
+  // Generate container div for highscore form elements
+  var containerDiv = document.createElement("div");
+  // containerDiv.className = "d-flex";
+  mainDiv.append(containerDiv);
+
+  // HIGHSCORE LOAD/RENDER
+  // iterate over items in localstorage.highscores
+  // create divElement for each highscore found
+  // set divElement.textContent to highscore.name + " " + highscore.value
+  // set divElement.className = "highscoreDiv"
+  // add each divElement to containerDiv
+  hsDiv = document.createElement("div");
+  hsDiv.textContent = "NO LOCAL STORAGE FUNCTIONALITY";
+  containerDiv.append(hsDiv);
+
+  var buttonGoBackDiv = document.createElement("button");
+  buttonGoBackDiv.className = "btn btn-primary btn-sm";
+  buttonGoBackDiv.textContent = "Go Back";
+  buttonGoBackDiv.setAttribute("id", "btnGoBack");
+  mainDiv.append(buttonGoBackDiv);
+
+  var buttonClearHighScoresDiv = document.createElement("button");
+  buttonClearHighScoresDiv.className = "btn btn-primary btn-sm";
+  buttonClearHighScoresDiv.textContent = "Clear Highscores";
+  buttonClearHighScoresDiv.setAttribute("id", "btnClearHS");
+  mainDiv.append(buttonClearHighScoresDiv);
+
+  // button click event handler section
+  mainDiv.addEventListener("click", btnClickHandler);
+
 };
 
 function startQuiz(){
@@ -200,10 +264,24 @@ function startQuiz(){
   displayQuestionCard();  // async call of displayQuestionCard()
 }
 
+function clearHighscores(){
+
+}
+
 function btnClickHandler(event){
   if(event.target.hasAttribute("id") === true){
     if(event.target.getAttribute("id") === "btnSubmit"){
-      console.log("btnSubmit was CLICKED!");
+      var inputDiv = document.getElementById("inputDivControlInput");
+      console.log("btnSubmit was CLICKED: " + inputDiv.value + " - " + hsValue);
+      displayHighscoreCard();
+    }
+    else if(event.target.getAttribute("id") === "btnGoBack"){
+      console.log("GO BACK button CLICKED");
+      displayIntroCard();
+    }
+    else if(event.target.getAttribute("id") === "btnClearHS"){
+      console.log("CLEAR HIGHSCORES button CLICKED");
+      clearHighscores();
     }
   }
   else if(event.target.hasAttribute("data-index")){
