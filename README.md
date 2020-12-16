@@ -1,9 +1,7 @@
 # code-quiz
 
 ## Description
-Timed, multiple-choice javascript code quiz with persistent top-performances.
-
-[code-quiz](https://brhestir.github.io/code-quiz/)
+A timed, multiple-choice javascript code quiz.
 
 ## Installation
 - [Clone this repo](https://github.com/brhestir/code-quiz.git)
