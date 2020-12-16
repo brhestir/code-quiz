@@ -51,6 +51,8 @@ var answerStatusTimerActive = false;
 var answerStatus = false;
 var hsInitials = "";
 var hsValue = 0;
+var timerDiv;                         // ref to time remaining div
+var btnViewHighscoresDiv;             // ref to viewHighscoresDiv
 
 function displayIntroCard(){
 
@@ -59,6 +61,10 @@ function displayIntroCard(){
   timerActive = false;  // reinit
   hsInitials = "";      // reinit
   hsValue = 0;          // reinit
+
+  // redisplay header content
+  timerEl.className = "p-2 visible";
+  btnViewHighscoresDiv.className = "p-2 visible";
 
   // Obtain root element
   var rootDiv = document.getElementById("rootDiv");
@@ -197,7 +203,9 @@ function displaySummaryCard(){
 };
 
 function displayHighscoreCard(){
-  console.log("Called into displayHighscoreCard()");
+  
+  timerEl.className = "p-2 invisible";
+  btnViewHighscoresDiv.className = "p-2 invisible";
 
   if(!locStorage.getItem('hsArray')){
     hsArray = [];
@@ -386,15 +394,13 @@ function displayCorrectWrongIndicator(){
 
 
 function updateTimer(){
-  var timerEl = document.getElementById("timerElement");
+  timerEl = document.getElementById("timerElement");
   if(timerActive===true){
     if(timerState>0){
       timerState -= 1;
     }
     else{
-      console.log("TIME IS UP!");
       clearTimeout(timerID);        // stop timer
-      // do other time is up action here
     }
     // Update timer display
     timerEl.textContent = "Time: " + timerState;  
@@ -405,12 +411,15 @@ function updateTimer(){
 }
 
 window.onload = function() {
-  console.log("[+] fired: window.onload()");
-
-  var btnViewHighscoresDiv = document.getElementById('highscoreElement');
+  
+  timerEl = document.getElementById('timerElement');
+  btnViewHighscoresDiv = document.getElementById('highscoreElement');
   btnViewHighscoresDiv.addEventListener('click', displayHighscoreCard);
+  
+  timerEl.className = "p-2 visible";
+  btnViewHighscoresDiv.className = "p-2 visible";
 
   displayIntroCard();
-  timerID = setInterval(updateTimer, 1000);
+  timerID = setInterval(updateTimer, 1000);   // start countdown
 };
   
