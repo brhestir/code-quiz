@@ -16,35 +16,45 @@ html, body {
   align-self: flex-start;
 }
 
+/* theme-styled button bkgd and border colors */
 .btn {
   background-color: rgb(79, 55, 109);
   border-color: rgb(180, 147, 226);
   width: min-content;
 }
+
+/* theme-styled button:hover bkgd and border colors */
 .btn:hover{
   border-color:rgb(178, 135, 238);
   background-color: rgb(178, 135, 238);
 }
+
+/* theme-styled button:active bkgd and border colors */
 .btn:active{
   border-color:rgb(178, 135, 238);
 }
 
+/* theme-styled display-highscore link */
 #highscoreElement {
   color: rgb(120, 80, 169);
 }
 
+/* theme-styled highscore-list-item bkgd */
+.highscoreEl {
+  background-color: rgb(239, 231, 250);
+}
+
+/* Answer-status-indicator text */
 .statusText{
   color:grey;
 }
 
+/* Answer-status-indicator hr to spec width */
 hr {
   width: 100%;
 }
 
+/* To style text to fit spec */
 .smallText {
   font-size: medium;
-}
-
-.highscoreEl {
-  background-color: rgb(239, 231, 250);
 }

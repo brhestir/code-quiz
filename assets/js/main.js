@@ -40,14 +40,14 @@ var questionAnswerArray = [
   ]
 ];
 
-locStorage = window.localStorage;     // localStorage access object
+var locStorage = window.localStorage;     // localStorage access object
 
 var questionState = 0;                // Global UI state counter
 var timerState = 75;                  // Time remaining counter
 var timerID;                          // setInterval id so we can clearInterval later
 var timerActive = false;              // timer on/off flag
 var answerStatusTimerID = -1;
-var answerStatusTimerActive = false;
+var answerStatusTimerActive = false;  
 var answerStatus = false;
 var hsInitials = "";
 var hsValue = 0;
@@ -288,16 +288,13 @@ function btnClickHandler(event){
     if(event.target.getAttribute("id") === "btnSubmit"){
       var inputDiv = document.getElementById("inputDivControlInput");
       hsInitials = inputDiv.value;
-      console.log("btnSubmit was CLICKED: " + hsInitials + " - " + hsValue);
       addHighscore();
       displayHighscoreCard();
     }
     else if(event.target.getAttribute("id") === "btnGoBack"){
-      console.log("GO BACK button CLICKED");
       displayIntroCard();
     }
     else if(event.target.getAttribute("id") === "btnClearHS"){
-      console.log("CLEAR HIGHSCORES button CLICKED");
       clearHighscores();
       displayHighscoreCard();
 
@@ -340,10 +337,8 @@ function displayCorrectWrongIndicator(){
   statusDiv = document.getElementById("statusDiv");
 
   if(answerStatusTimerActive === false){
-    
     answerStatusTimerActive = true;     // set answerStatusTimerActive flag
     
-    console.log("[+] fired: displayCorrectWrongIndicator, status: " + answerStatus);
     hbElement = document.createElement("hr");
     hbElement.className = "mt-3 w-100";
     statusElement = document.createElement("h4");
