@@ -2,7 +2,7 @@
 // The main javascript file for the code-quiz app
 
 // Container array for question/answers/truth-value data
-var questionAnswerArray = [
+let questionAnswerArray = [
   [ "Commonly used data types DO NOT include:",
     [ [ "Strings", "false" ],
       [ "Booleans", "false" ],
@@ -40,19 +40,19 @@ var questionAnswerArray = [
   ]
 ];
 
-var locStorage = window.localStorage;     // localStorage access object
+let locStorage = window.localStorage;     // localStorage access object
 
-var questionState = 0;                // Global UI state counter
-var timerState = 75;                  // Time remaining counter
-var timerID;                          // setInterval id so we can clearInterval later
-var timerActive = false;              // timer on/off flag
-var answerStatusTimerID = -1;
-var answerStatusTimerActive = false;  
-var answerStatus = false;
-var hsInitials = "";
-var hsValue = 0;
-var timerDiv;                         // ref to time remaining div
-var btnViewHighscoresDiv;             // ref to viewHighscoresDiv
+let questionState = 0;                // Global UI state counter
+let timerState = 75;                  // Time remaining counter
+let timerID;                          // setInterval id so we can clearInterval later
+let timerActive = false;              // timer on/off flag
+let answerStatusTimerID = -1;
+let answerStatusTimerActive = false;  
+let answerStatus = false;
+let hsInitials = "";
+let hsValue = 0;
+let timerDiv;                         // ref to time remaining div
+let btnViewHighscoresDiv;             // ref to viewHighscoresDiv
 
 function displayIntroCard(){
 
@@ -68,28 +68,28 @@ function displayIntroCard(){
   btnViewHighscoresDiv.className = "p-2 visible";
 
   // Obtain root element
-  var rootDiv = document.getElementById("rootDiv");
+  let rootDiv = document.getElementById("rootDiv");
   // Obtain and clear child of root (clear UI)
   if(rootDiv.firstChild){
     rootDiv.removeChild(rootDiv.firstChild);
   }
 
-  var mainDiv = document.createElement("div");
+  let mainDiv = document.createElement("div");
   mainDiv.setAttribute("id", "trunkDiv");
   mainDiv.className = "d-flex flex-column align-items-center mt-3";
   rootDiv.append(mainDiv);
 
   // Obtain and configure content element list
-  var headingElement = document.createElement("h3");
+  let headingElement = document.createElement("h3");
   headingElement.textContent = "Coding Quiz Challenge";
   mainDiv.append(headingElement);
 
-  var textElement = document.createElement("p");
+  let textElement = document.createElement("p");
   textElement.className = "text-center";
   textElement.textContent = "Try to answer the following code-related questions within the time limit.  Keep in mind that incorrect answers will penalize your score/time by ten seconds!";
   mainDiv.append(textElement);
 
-  var btnElement = document.createElement("button");
+  let btnElement = document.createElement("button");
   btnElement.className = "btn btn-primary btn-sm text-nowrap";
   btnElement.textContent = "Start Quiz";
   mainDiv.append(btnElement);
@@ -101,30 +101,30 @@ function displayIntroCard(){
 
 function displayQuestionCard(){
   // Obtain root element
-  var rootDiv = document.getElementById("rootDiv");
+  let rootDiv = document.getElementById("rootDiv");
   // Obtain and clear child of root (clear UI)
   if(rootDiv.firstChild){
     rootDiv.removeChild(rootDiv.firstChild);
   }
 
-  var mainDiv = document.createElement("div");
+  let mainDiv = document.createElement("div");
   mainDiv.setAttribute("id", "trunkDiv");
   mainDiv.className = "d-flex flex-column justify-content-start mt-3";
   rootDiv.append(mainDiv);
 
   // Obtain and configure content element list
-  var headingElement = document.createElement("h4");
+  let headingElement = document.createElement("h4");
   headingElement.textContent = questionAnswerArray[questionState][0]; //[0] implies Q part
   mainDiv.append(headingElement);
 
   // Generate container div for answer buttons buttons
-  var btnContainer = document.createElement("div");
+  let btnContainer = document.createElement("div");
   btnContainer.className = "d-grid flex-column gap-1 btnContainer";
   mainDiv.append(btnContainer);
 
   // Generate answer button elements from array details
-  for(var i=0; i<4; i++){
-    var btnElement = document.createElement("button");
+  for(let i=0; i<4; i++){
+    let btnElement = document.createElement("button");
     btnElement.className = "btn btn-primary btn-sm text-nowrap";
     btnElement.textContent = ""+(i+1)+". " + questionAnswerArray[questionState][1][i][0]; //[1][0][0] -> answer[0]text
     btnElement.setAttribute("data-index", i);
@@ -140,43 +140,43 @@ function displaySummaryCard(){
   hsValue = timerState;   // store time remaining as final score
   
   // Obtain root element
-  var rootDiv = document.getElementById("rootDiv");
+  let rootDiv = document.getElementById("rootDiv");
   // Obtain and clear child of root (clear UI)
   if(rootDiv.firstChild){
     rootDiv.removeChild(rootDiv.firstChild);
   }
 
-  var mainDiv = document.createElement("div");
+  let mainDiv = document.createElement("div");
   mainDiv.setAttribute("id", "trunkDiv");
   mainDiv.className = "d-flex flex-column align-items-center mt-3";
   rootDiv.append(mainDiv);
 
   // Obtain and configure content element list
-  var headingElement = document.createElement("h3");
+  let headingElement = document.createElement("h3");
   headingElement.textContent = "All done!";
   mainDiv.append(headingElement);
 
   // Obtain and configure content element list
-  var paragraphElement = document.createElement("p");
+  let paragraphElement = document.createElement("p");
   paragraphElement.textContent = "Your final score is " + hsValue;
   mainDiv.append(paragraphElement);
 
   // Generate container div for highscore form elements
-  var flexDiv = document.createElement("div");
+  let flexDiv = document.createElement("div");
   flexDiv.className = "d-flex align-items-start w-100";
   mainDiv.append(flexDiv);
 
-  var initialsDiv = document.createElement("p");
+  let initialsDiv = document.createElement("p");
   initialsDiv.className = "smallText m-2 text-nowrap";
   initialsDiv.textContent = "Enter initials:";
   flexDiv.append(initialsDiv);
 
-  var inputDiv = document.createElement("input");
+  let inputDiv = document.createElement("input");
   inputDiv.className = "form-control form-control-sm flex-grow-1 m-1";
   inputDiv.setAttribute("id", "inputDivControlInput");
   flexDiv.append(inputDiv);
 
-  var buttonDiv = document.createElement("button");
+  let buttonDiv = document.createElement("button");
   buttonDiv.className = "btn btn-primary btn-sm m-1";
   buttonDiv.textContent = "Submit";
   buttonDiv.setAttribute("id", "btnSubmit");
@@ -197,29 +197,29 @@ function displayHighscoreCard(){
     hsArray = JSON.parse(locStorage.getItem('hsArray'));
   }
 
-  var rootDiv = document.getElementById("rootDiv");   // Obtain root element
+  let rootDiv = document.getElementById("rootDiv");   // Obtain root element
   // Obtain and clear child of root (clear UI)
   if(rootDiv.firstChild){
     rootDiv.removeChild(rootDiv.firstChild);
   }
 
-  var mainDiv = document.createElement("div");
+  let mainDiv = document.createElement("div");
   mainDiv.setAttribute("id", "trunkDiv");
   mainDiv.className = "d-flex flex-column justify-content-start mt-3";
   rootDiv.append(mainDiv);
 
   // Obtain and configure content element list
-  var headingElement = document.createElement("h3");
+  let headingElement = document.createElement("h3");
   headingElement.textContent = "Highscores";
   mainDiv.append(headingElement);
 
   // Generate container div for highscore elements
-  var containerDiv = document.createElement("div");
+  let containerDiv = document.createElement("div");
   containerDiv.className = "container-fluid m-0 p-0";
   mainDiv.append(containerDiv);
 
   // HIGHSCORE LOAD/RENDER
-  for(var i=0; i<hsArray.length; i++){
+  for(let i=0; i<hsArray.length; i++){
     hsDiv = document.createElement("div");
     hsDiv.className = "m-1 highscoreEl";
     hsDiv.textContent = hsArray[i]['initials'] + " - " + hsArray[i]['value'];
@@ -227,17 +227,17 @@ function displayHighscoreCard(){
   }
 
   // Generate container div for button elements
-  var flexDiv = document.createElement("div");
+  let flexDiv = document.createElement("div");
   flexDiv.className = "d-flex justify-content-start";
   mainDiv.append(flexDiv);
   
-  var buttonGoBackDiv = document.createElement("button");
+  let buttonGoBackDiv = document.createElement("button");
   buttonGoBackDiv.className = "btn btn-primary btn-sm m-1 text-nowrap";
   buttonGoBackDiv.textContent = "Go Back";
   buttonGoBackDiv.setAttribute("id", "btnGoBack");
   flexDiv.append(buttonGoBackDiv);
 
-  var buttonClearHighScoresDiv = document.createElement("button");
+  let buttonClearHighScoresDiv = document.createElement("button");
   buttonClearHighScoresDiv.className = "btn btn-primary btn-sm m-1 text-nowrap";
   buttonClearHighScoresDiv.textContent = "Clear Highscores";
   buttonClearHighScoresDiv.setAttribute("id", "btnClearHS");
@@ -250,7 +250,7 @@ function displayHighscoreCard(){
 
 function startQuiz(){
   // Obtain root element
-  var rootDiv = document.getElementById("rootDiv");
+  let rootDiv = document.getElementById("rootDiv");
   // Obtain and clear child of root (clear UI)
   if(rootDiv.firstChild){
     rootDiv.removeChild(rootDiv.firstChild);
@@ -263,21 +263,21 @@ function startQuiz(){
 
 function clearHighscores(){
   if(locStorage.getItem('hsArray')){
-    var hsArray = [];
+    let hsArray = [];
     locStorage.setItem('hsArray', JSON.stringify(hsArray));
   }
 };
 
 function addHighscore(){
   if(!locStorage.getItem('hsArray')){
-    var hsArray = [];
-    var hsEntry = { "initials": hsInitials, "value": hsValue };
+    let hsArray = [];
+    let hsEntry = { "initials": hsInitials, "value": hsValue };
     hsArray.push(hsEntry);
     locStorage.setItem('hsArray', JSON.stringify(hsArray));
   }
   else{
-    var hsArray = JSON.parse(locStorage.getItem('hsArray'));
-    var hsEntry = { "initials": hsInitials, "value": hsValue };
+    let hsArray = JSON.parse(locStorage.getItem('hsArray'));
+    let hsEntry = { "initials": hsInitials, "value": hsValue };
     hsArray.push(hsEntry);
     locStorage.setItem('hsArray', JSON.stringify(hsArray));
   }
@@ -286,7 +286,7 @@ function addHighscore(){
 function btnClickHandler(event){
   if(event.target.hasAttribute("id") === true){
     if(event.target.getAttribute("id") === "btnSubmit"){
-      var inputDiv = document.getElementById("inputDivControlInput");
+      let inputDiv = document.getElementById("inputDivControlInput");
       hsInitials = inputDiv.value;
       addHighscore();
       displayHighscoreCard();
@@ -301,7 +301,7 @@ function btnClickHandler(event){
     }
   }
   else if(event.target.hasAttribute("data-index")){
-    var btnIndex = event.target.getAttribute("data-index"); // btn index as created earlier
+    let btnIndex = event.target.getAttribute("data-index"); // btn index as created earlier
     
     // on CORRECT, increment questionState & redraw
     if(questionAnswerArray[questionState][1][btnIndex][1] === "true"){
