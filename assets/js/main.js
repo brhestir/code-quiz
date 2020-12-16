@@ -369,8 +369,9 @@ function updateTimer(){
     if(timerState>0){
       timerState -= 1;
     }
-    else{
-      clearTimeout(timerID);        // stop timer
+    else{                         // if timerState === 0 then the game is over
+      timerActive = false;        // pause timer
+      displaySummaryCard();       // game over -> go to summary card
     }
     // Update timer display
     timerEl.textContent = "Time: " + timerState;  
