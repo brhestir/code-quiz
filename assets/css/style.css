@@ -19,7 +19,7 @@ html, body {
 .btn {
   background-color: rgb(79, 55, 109);
   border-color: rgb(180, 147, 226);
-  height:min-content;
+  width: min-content;
 }
 .btn:hover{
   border-color:rgb(178, 135, 238);

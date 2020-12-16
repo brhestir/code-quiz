@@ -31,11 +31,11 @@ var questionAnswerArray = [
       [ "parentheses", "false" ]
     ]
   ],
-  [ "The Javascript language has what of the following properties?",
-    [ [ "strongly typed", "false" ],
-      [ "turing complete", "false" ],
-      [ "piecewise comprehensble", "false" ],
-      [ "first-class functions", "true" ]
+  [ "A very useful tool used furing development and debugging for printing content to the debugger is:",
+    [ [ "JavaScript", "false" ],
+      [ "terminal / bash", "false" ],
+      [ "for loops", "false" ],
+      [ "console.log", "true" ]
     ] 
   ]
 ];
@@ -89,7 +89,7 @@ function displayIntroCard(){
   mainDiv.append(textElement);
 
   var btnElement = document.createElement("button");
-  btnElement.className = "btn btn-primary btn-sm";
+  btnElement.className = "btn btn-primary btn-sm text-nowrap";
   btnElement.textContent = "Start Quiz";
   mainDiv.append(btnElement);
 
@@ -118,29 +118,25 @@ function displayQuestionCard(){
 
   // Generate container div for answer buttons buttons
   var btnContainer = document.createElement("div");
-  btnContainer.className = "d-grid gap-1 btnContainer";
+  btnContainer.className = "d-grid flex-column gap-1 btnContainer";
   mainDiv.append(btnContainer);
 
   // Generate answer button elements from array details
   for(var i=0; i<4; i++){
     var btnElement = document.createElement("button");
-    btnElement.className = "btn btn-primary btn-sm";
+    btnElement.className = "btn btn-primary btn-sm text-nowrap";
     btnElement.textContent = ""+(i+1)+". " + questionAnswerArray[questionState][1][i][0]; //[1][0][0] -> answer[0]text
     btnElement.setAttribute("data-index", i);
     btnContainer.append(btnElement);
-  };  // end for
+  };
 
   // button click event handler section
   btnContainer.addEventListener("click", btnClickHandler);
 };
 
 function displaySummaryCard(){
-
-  console.log("Called into displaySummaryCard()");
-
-  timerActive = false;          // halt timer
-  hsValue = timerState;  // store time remaining as final score
-  
+  timerActive = false;    // halt timer
+  hsValue = timerState;   // store time remaining as final score
   
   // Obtain root element
   var rootDiv = document.getElementById("rootDiv");
@@ -166,44 +162,42 @@ function displaySummaryCard(){
 
   // Generate container div for highscore form elements
   var rowDiv = document.createElement("div");
-  rowDiv.className = "row";
+  rowDiv.className = "row w-100";
   mainDiv.append(rowDiv);
 
   var colDiv1 = document.createElement("div");
-  colDiv1.className = "col-4";
+  colDiv1.className = "col-4 m-0 p-0 align-items-start";
   rowDiv.append(colDiv1);
 
   var colDiv2 = document.createElement("div");
-  colDiv2.className = "col-4";
+  colDiv2.className = "col-4 m-0 p-0";
   rowDiv.append(colDiv2);
   
   var colDiv3 = document.createElement("div");
-  colDiv3.className = "col-4";
+  colDiv3.className = "col-4 m-0 p-0 align-items-end";
   rowDiv.append(colDiv3);
 
   var initialsDiv = document.createElement("p");
-  initialsDiv.className = "smallText";
+  initialsDiv.className = "smallText m-1";
   initialsDiv.textContent = "Enter initials:";
   colDiv1.append(initialsDiv);
 
   var inputDiv = document.createElement("input");
-  inputDiv.className = "form-control form-control-sm";
+  inputDiv.className = "form-control form-control-sm m-1";
   inputDiv.setAttribute("id", "inputDivControlInput");
   colDiv2.append(inputDiv);
 
   var buttonDiv = document.createElement("button");
-  buttonDiv.className = "btn btn-primary btn-sm";
+  buttonDiv.className = "btn btn-primary btn-sm m-1";
   buttonDiv.textContent = "Submit";
   buttonDiv.setAttribute("id", "btnSubmit");
   colDiv3.append(buttonDiv);
 
   // button click event handler section
   buttonDiv.addEventListener("click", btnClickHandler);
-  
 };
 
 function displayHighscoreCard(){
-  
   timerEl.className = "p-2 invisible";
   btnViewHighscoresDiv.className = "p-2 invisible";
 
@@ -214,8 +208,7 @@ function displayHighscoreCard(){
     hsArray = JSON.parse(locStorage.getItem('hsArray'));
   }
 
-  // Obtain root element
-  var rootDiv = document.getElementById("rootDiv");
+  var rootDiv = document.getElementById("rootDiv");   // Obtain root element
   // Obtain and clear child of root (clear UI)
   if(rootDiv.firstChild){
     rootDiv.removeChild(rootDiv.firstChild);
@@ -277,14 +270,14 @@ function startQuiz(){
   timerState = 75;        // Set initial timer state to 75 seconds
   timerActive = true;     // Turn timer on
   displayQuestionCard();  // async call of displayQuestionCard()
-}
+};
 
 function clearHighscores(){
   if(locStorage.getItem('hsArray')){
     var hsArray = [];
     locStorage.setItem('hsArray', JSON.stringify(hsArray));
   }
-}
+};
 
 function addHighscore(){
   if(!locStorage.getItem('hsArray')){
@@ -299,7 +292,7 @@ function addHighscore(){
     hsArray.push(hsEntry);
     locStorage.setItem('hsArray', JSON.stringify(hsArray));
   }
-}
+};
 
 function btnClickHandler(event){
   if(event.target.hasAttribute("id") === true){
@@ -351,7 +344,7 @@ function btnClickHandler(event){
       }
     }
   } 
-}
+};
 
 function displayCorrectWrongIndicator(){
   
@@ -384,14 +377,7 @@ function displayCorrectWrongIndicator(){
     }, 400);
 
   }
-  // else if(answerStatusTimerActive === true){
-  //   clearTimeout(answerStatusTimerID);      // clearTimeout so we dont 2x remove children
-  //   answerStatusTimerActive = false;        // timer was cleared
-  //   statusDiv.removeChild();                // remove child 1 of 2
-  //   statusDiv.removeChild();                // remove child 2 of 2
-  // }
 };
-
 
 function updateTimer(){
   timerEl = document.getElementById("timerElement");
@@ -405,11 +391,9 @@ function updateTimer(){
     // Update timer display
     timerEl.textContent = "Time: " + timerState;  
   }
-  else{
-    // do nothing
-  }
-}
+};
 
+// Call main proc when window loading is complete
 window.onload = function() {
   
   timerEl = document.getElementById('timerElement');
