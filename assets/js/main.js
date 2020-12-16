@@ -40,23 +40,25 @@ var questionAnswerArray = [
   ]
 ];
 
-locStorage = window.localStorage; // localStorage access object
+locStorage = window.localStorage;     // localStorage access object
 
-var questionState = 0;    // Global UI state counter
-var timerState = 75;      // Time remaining counter
-var timerID;              // setInterval id so we can clearInterval later
-var timerActive = false;  // timer on/off flag
+var questionState = 0;                // Global UI state counter
+var timerState = 75;                  // Time remaining counter
+var timerID;                          // setInterval id so we can clearInterval later
+var timerActive = false;              // timer on/off flag
+var answerStatusTimerID = -1;
+var answerStatusTimerActive = false;
+var answerStatus = false;
 var hsInitials = "";
 var hsValue = 0;
 
 function displayIntroCard(){
 
-  questionState = 0;    // Global UI state counter
-  timerState = 75;      // Time remaining counter
-  // timerID;              // setInterval id so we can clearInterval later
-  timerActive = false;  // timer on/off flag
-  hsInitials = "";
-  hsValue = 0;
+  questionState = 0;    // reinit
+  timerState = 75;      // reinit
+  timerActive = false;  // reinit
+  hsInitials = "";      // reinit
+  hsValue = 0;          // reinit
 
   // Obtain root element
   var rootDiv = document.getElementById("rootDiv");
@@ -316,10 +318,9 @@ function btnClickHandler(event){
     
     // on CORRECT, increment questionState & redraw
     if(questionAnswerArray[questionState][1][btnIndex][1] === "true"){
-      console.log("Answer is TRUE!");
-      console.log("Old question state: " + questionState);
+      answerStatus = true;
+      displayCorrectWrongIndicator();
       questionState++;  // increment question state
-      console.log("New question state: " + questionState);
       
       if(questionState < (questionAnswerArray.length)){
         displayQuestionCard();    // Draw question card under new state
@@ -331,23 +332,58 @@ function btnClickHandler(event){
     else if( questionAnswerArray[questionState][1][btnIndex][1] === "false"){
       // Decrement main timer by 10 seconds
       if(timerState>=10){
-        console.log("Answer is FALSE! Timer -10 sec!");
+        answerStatus = false;
+        displayCorrectWrongIndicator();
         timerState -= 10;
       }
       else{
-        console.log("Answer is FALSE! Timer ZEROED");
+        answerStatus = false;
+        displayCorrectWrongIndicator();
         timerState = 0;   // set timer to minimum
       }
     }
-    else{
-      console.log("Answer is NEITHER TRUE NOR FALSE");
-    }
-  }
-  else {
-    console.log("button click event target UNHANDLED");
-  }  
-    
+  } 
 }
+
+function displayCorrectWrongIndicator(){
+  
+  statusDiv = document.getElementById("statusDiv");
+
+  if(answerStatusTimerActive === false){
+    
+    answerStatusTimerActive = true;     // set answerStatusTimerActive flag
+    
+    console.log("[+] fired: displayCorrectWrongIndicator, status: " + answerStatus);
+    hbElement = document.createElement("hr");
+    hbElement.className = "mt-3 w-100";
+    statusElement = document.createElement("h4");
+    statusElement.className = "statusText w-100";
+    
+    if(answerStatus === true){
+      statusElement.textContent = "Correct!";
+    }
+    else{
+      statusElement.textContent = "Wrong!";
+    }
+    
+    statusDiv.append(hbElement);
+    statusDiv.append(statusElement);
+    
+    answerStatusTimerID = setTimeout(function(){
+      hbElement.remove();
+      statusElement.remove();
+      answerStatusTimerActive = false;       // timedOut timer is inactive
+    }, 400);
+
+  }
+  // else if(answerStatusTimerActive === true){
+  //   clearTimeout(answerStatusTimerID);      // clearTimeout so we dont 2x remove children
+  //   answerStatusTimerActive = false;        // timer was cleared
+  //   statusDiv.removeChild();                // remove child 1 of 2
+  //   statusDiv.removeChild();                // remove child 2 of 2
+  // }
+};
+
 
 function updateTimer(){
   var timerEl = document.getElementById("timerElement");
