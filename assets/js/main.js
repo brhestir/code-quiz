@@ -81,7 +81,7 @@ function displayIntroCard(){
   mainDiv.append(textElement);
 
   var btnElement = document.createElement("button");
-  btnElement.className = "btn btn-primary";
+  btnElement.className = "btn btn-primary btn-sm";
   btnElement.textContent = "Start Quiz";
   mainDiv.append(btnElement);
 
@@ -100,11 +100,11 @@ function displayQuestionCard(){
 
   var mainDiv = document.createElement("div");
   mainDiv.setAttribute("id", "trunkDiv");
-  mainDiv.className = "d-flex flex-column align-items-center mt-3";
+  mainDiv.className = "d-flex flex-column justify-content-start mt-3";
   rootDiv.append(mainDiv);
 
   // Obtain and configure content element list
-  var headingElement = document.createElement("h3");
+  var headingElement = document.createElement("h4");
   headingElement.textContent = questionAnswerArray[questionState][0]; //[0] implies Q part
   mainDiv.append(headingElement);
 
@@ -213,7 +213,7 @@ function displayHighscoreCard(){
 
   var mainDiv = document.createElement("div");
   mainDiv.setAttribute("id", "trunkDiv");
-  mainDiv.className = "d-flex flex-column align-items-center mt-3";
+  mainDiv.className = "d-flex flex-column justify-content-start mt-3";
   rootDiv.append(mainDiv);
 
   // Obtain and configure content element list
@@ -221,9 +221,9 @@ function displayHighscoreCard(){
   headingElement.textContent = "Highscores";
   mainDiv.append(headingElement);
 
-  // Generate container div for highscore form elements
+  // Generate container div for highscore elements
   var containerDiv = document.createElement("div");
-  containerDiv.className = "container-fluid";
+  containerDiv.className = "container-fluid m-0 p-0";
   mainDiv.append(containerDiv);
 
   // HIGHSCORE LOAD/RENDER
@@ -233,17 +233,23 @@ function displayHighscoreCard(){
     hsDiv.textContent = hsArray[i]['initials'] + " - " + hsArray[i]['value'];
     containerDiv.append(hsDiv);
   }
+
+  // Generate container div for button elements
+  var flexDiv = document.createElement("div");
+  flexDiv.className = "d-flex justify-content-start";
+  mainDiv.append(flexDiv);
+  
   var buttonGoBackDiv = document.createElement("button");
-  buttonGoBackDiv.className = "btn btn-primary btn-sm";
+  buttonGoBackDiv.className = "btn btn-primary btn-sm m-1";
   buttonGoBackDiv.textContent = "Go Back";
   buttonGoBackDiv.setAttribute("id", "btnGoBack");
-  mainDiv.append(buttonGoBackDiv);
+  flexDiv.append(buttonGoBackDiv);
 
   var buttonClearHighScoresDiv = document.createElement("button");
-  buttonClearHighScoresDiv.className = "btn btn-primary btn-sm";
+  buttonClearHighScoresDiv.className = "btn btn-primary btn-sm m-1";
   buttonClearHighScoresDiv.textContent = "Clear Highscores";
   buttonClearHighScoresDiv.setAttribute("id", "btnClearHS");
-  mainDiv.append(buttonClearHighScoresDiv);
+  flexDiv.append(buttonClearHighScoresDiv);
 
   // button click event handler section
   mainDiv.addEventListener("click", btnClickHandler);
@@ -355,7 +361,7 @@ function updateTimer(){
       // do other time is up action here
     }
     // Update timer display
-    timerEl.textContent = "Time Remaining: " + timerState;  
+    timerEl.textContent = "Time: " + timerState;  
   }
   else{
     // do nothing
