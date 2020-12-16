@@ -57,12 +57,13 @@ var btnViewHighscoresDiv;             // ref to viewHighscoresDiv
 function displayIntroCard(){
 
   questionState = 0;    // reinit
-  timerState = 75;      // reinit
+  timerState = 0;       // reinit
   timerActive = false;  // reinit
   hsInitials = "";      // reinit
   hsValue = 0;          // reinit
 
   // redisplay header content
+  timerEl.textContent = "Time: " + timerState;
   timerEl.className = "p-2 visible";
   btnViewHighscoresDiv.className = "p-2 visible";
 
@@ -161,37 +162,25 @@ function displaySummaryCard(){
   mainDiv.append(paragraphElement);
 
   // Generate container div for highscore form elements
-  var rowDiv = document.createElement("div");
-  rowDiv.className = "row w-100";
-  mainDiv.append(rowDiv);
-
-  var colDiv1 = document.createElement("div");
-  colDiv1.className = "col-4 m-0 p-0 align-items-start";
-  rowDiv.append(colDiv1);
-
-  var colDiv2 = document.createElement("div");
-  colDiv2.className = "col-4 m-0 p-0";
-  rowDiv.append(colDiv2);
-  
-  var colDiv3 = document.createElement("div");
-  colDiv3.className = "col-4 m-0 p-0 align-items-end";
-  rowDiv.append(colDiv3);
+  var flexDiv = document.createElement("div");
+  flexDiv.className = "d-flex align-items-start w-100";
+  mainDiv.append(flexDiv);
 
   var initialsDiv = document.createElement("p");
-  initialsDiv.className = "smallText m-1";
+  initialsDiv.className = "smallText m-2 text-nowrap";
   initialsDiv.textContent = "Enter initials:";
-  colDiv1.append(initialsDiv);
+  flexDiv.append(initialsDiv);
 
   var inputDiv = document.createElement("input");
-  inputDiv.className = "form-control form-control-sm m-1";
+  inputDiv.className = "form-control form-control-sm flex-grow-1 m-1";
   inputDiv.setAttribute("id", "inputDivControlInput");
-  colDiv2.append(inputDiv);
+  flexDiv.append(inputDiv);
 
   var buttonDiv = document.createElement("button");
   buttonDiv.className = "btn btn-primary btn-sm m-1";
   buttonDiv.textContent = "Submit";
   buttonDiv.setAttribute("id", "btnSubmit");
-  colDiv3.append(buttonDiv);
+  flexDiv.append(buttonDiv);
 
   // button click event handler section
   buttonDiv.addEventListener("click", btnClickHandler);
@@ -243,13 +232,13 @@ function displayHighscoreCard(){
   mainDiv.append(flexDiv);
   
   var buttonGoBackDiv = document.createElement("button");
-  buttonGoBackDiv.className = "btn btn-primary btn-sm m-1";
+  buttonGoBackDiv.className = "btn btn-primary btn-sm m-1 text-nowrap";
   buttonGoBackDiv.textContent = "Go Back";
   buttonGoBackDiv.setAttribute("id", "btnGoBack");
   flexDiv.append(buttonGoBackDiv);
 
   var buttonClearHighScoresDiv = document.createElement("button");
-  buttonClearHighScoresDiv.className = "btn btn-primary btn-sm m-1";
+  buttonClearHighScoresDiv.className = "btn btn-primary btn-sm m-1 text-nowrap";
   buttonClearHighScoresDiv.textContent = "Clear Highscores";
   buttonClearHighScoresDiv.setAttribute("id", "btnClearHS");
   flexDiv.append(buttonClearHighScoresDiv);
