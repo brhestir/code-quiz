@@ -1,7 +1,7 @@
 # code-quiz
 
 ## Description
-A timed, multiple-choice javascript code quiz.
+Timed multiple-choice javascript coding quiz
 
 ## Installation
 - [Clone this repo](https://github.com/brhestir/code-quiz.git)
