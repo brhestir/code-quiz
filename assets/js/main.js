@@ -31,7 +31,7 @@ var questionAnswerArray = [
       [ "parentheses", "false" ]
     ]
   ],
-  [ "A very useful tool used furing development and debugging for printing content to the debugger is:",
+  [ "A very useful tool used during development and debugging for printing content to the debugger is:",
     [ [ "JavaScript", "false" ],
       [ "terminal / bash", "false" ],
       [ "for loops", "false" ],
